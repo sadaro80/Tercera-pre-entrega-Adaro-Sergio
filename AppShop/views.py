@@ -2,7 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from AppShop.models import *
 from django.template import loader
-from .forms import *
+from AppShop.forms import ClienteRegistroForm
+from AppShop.forms import ClienteLoginForm
+from AppShop.forms import ContactoForm
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+
+
 
 
 # Create your views here.
@@ -31,19 +37,20 @@ def living_room(request):
 
 
 
-def contacto(request):  
+def contacto(request):
     enviado = False
+
     if request.method == "POST":
         form = ContactoForm(request.POST)
         if form.is_valid():
-            nombre = form.cleaned_data['nombre']
-            email = form.cleaned_data['email']
-            mensaje = form.cleaned_data['mensaje']
-            print(f"Mensaje recibido de {nombre} ({email}): {mensaje}")
+            form.save()
             enviado = True
+            form = ContactoForm()  # limpiar el formulario
     else:
         form = ContactoForm()
+
     return render(request, "AppShop/contacto.html", {"form": form, "enviado": enviado})
+
 
 
 def registrarse(request):
@@ -52,9 +59,11 @@ def registrarse(request):
     if request.method == "POST":
         form = ClienteRegistroForm(request.POST)
         if form.is_valid():
-            datos = form.cleaned_data
-            print("Cliente registrado:", datos)
+            cliente = form.save(commit=False)
+            cliente.password = make_password(form.cleaned_data['password'])  # encriptar contraseña
+            cliente.save()
             registrado = True
+            form = ClienteRegistroForm()  # limpiar el formulario
     else:
         form = ClienteRegistroForm()
 
@@ -62,24 +71,33 @@ def registrarse(request):
 
 
 
+
+  
+
+
+
 def iniciar_sesion(request):
     error = None
 
     if request.method == "POST":
-        form = LoginForm(request.POST)
+        form = ClienteLoginForm(request.POST)
         if form.is_valid():
-            usuario = form.cleaned_data['username']
-            contraseña = form.cleaned_data['password']
-            user = authenticate(request, username=usuario, password=contraseña)
-            if user is not None:
-                login(request, user)
-                return redirect('inicio')  # redirigí a la página principal
-            else:
-                error = "Usuario o contraseña incorrectos"
+            usuario = form.cleaned_data['usuario']
+            password = form.cleaned_data['password']
+
+            try:
+                cliente = Cliente.objects.get(usuario=usuario)
+                if check_password(password, cliente.password):
+                    return render(request, "AppShop/home.html", {"cliente": cliente})
+                else:
+                    error = "Contraseña incorrecta"
+            except Cliente.DoesNotExist:
+                error = "Usuario no encontrado"
     else:
-        form = LoginForm()
+        form = ClienteLoginForm()
 
     return render(request, "AppShop/iniciar_sesion.html", {"form": form, "error": error})
+
 
 
 
