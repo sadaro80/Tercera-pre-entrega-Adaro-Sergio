@@ -1,0 +1,36 @@
+{% extends "AppShop\PlantillaInicio.html" %}
+
+{% load static %}
+
+{% block contenido %}
+
+<!-- HTML -->
+<div class="d-grid gap-2 col-6 mx-auto">
+  <a href="{% url 'iniciar_sesion' %}" class="btn custom-btn btn-usuario" role="button">Usuario</a>
+  <a href="{% url 'iniciar_sesion' %}" class="btn custom-btn btn-admin" role="button">Administrador</a>
+</div>
+
+<!-- CSS -->
+<style>
+  .custom-btn {
+    border-radius: 0; /* Botones cuadrados */
+    font-size: 1.5rem; /* Fuente más grande */
+    padding: 0.75rem 1.25rem; /* Espaciado interno */
+    font-weight: bold; /* Fuente más gruesa */
+  }
+
+  .btn-usuario {
+    background-color: #b9edd2; /* Color turquesa */
+    color: rgb(7, 20, 1);
+    border: none;
+  }
+
+  .btn-admin {
+    background-color: #efdada; /* Verde */
+    color: rgb(39, 1, 1);
+    border: none;
+  }
+
+</style>
+
+{% endblock %}

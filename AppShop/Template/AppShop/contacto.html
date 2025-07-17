@@ -1,17 +1,18 @@
-{% extends "PlantillaBase.html" %}
+{% extends "AppShop/PlantillaBaseUsuario.html" %}
 {% load static %}
 
 {% block contenido %}
 <div class="container px-4 px-lg-5">
     <h2>Contacto</h2>
     {% if enviado %}
-        <div class="alert alert-success">¡Gracias por tu mensaje! Te responderemos pronto.</div>
+        <div class="alert alert-danger">¡Gracias por tu mensaje! Te responderemos pronto.</div>
     {% else %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
     {% endif %}
 </div>
 {% endblock %}
+

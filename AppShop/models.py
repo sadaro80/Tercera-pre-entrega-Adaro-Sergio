@@ -2,14 +2,18 @@ from django.db import models
 
 # Create your models here.
 
-class productos(models.Model):
-    sku = models.CharField(max_length=100, primary_key=True)
+class Producto(models.Model):
+    sku = models.CharField(max_length=20, unique=True)
     categoria = models.CharField(max_length=100)
     nombre = models.CharField(max_length=100)
-    precio = models.IntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.TextField()
-    imagen = models.ImageField(upload_to='productos', null=True, blank=True)
-    stock = models.IntegerField()
+    stock = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.nombre} ({self.sku})"
+
+    
     
 class MensajeContacto(models.Model):
     nombre = models.CharField(max_length=100)

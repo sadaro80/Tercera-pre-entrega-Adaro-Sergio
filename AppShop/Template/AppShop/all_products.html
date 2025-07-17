@@ -1,8 +1,48 @@
-{% extends "PlantillaBase.html" %}
+{% extends "AppShop/PlantillaBaseUsuario.html" %}
 
 {% load static %}
 
 {% block contenido %}
-<h2>Sección de Todos los Productos</h2>
-<p>Explorá nuestros productos para embellecer tu hogar.</p>
+<!-- Botones redondos con enlaces -->
+<div class="d-flex justify-content-center gap-3 mt-4">
+  <a href="{% url 'kitchen' %}" class="btn btn-round btn-electro">Kitchen</a>
+  <a href="{% url 'bedroom' %}" class="btn btn-round btn-muebles">Bedroom</a>
+  <a href="{% url 'bathroom' %}" class="btn btn-round btn-deco">Bathroom</a>
+  <a href="{% url 'living_room' %}" class="btn btn-round btn-deco">Living romm</a>
+</div>
+
+<!-- CSS personalizado -->
+<style>
+  .btn-round {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 100px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s ease;
+  }
+
+  .btn-electro {
+    background-color: #007bff;
+  }
+
+  .btn-muebles {
+    background-color: #28a745;
+  }
+
+  .btn-deco {
+    background-color: #ffc107;
+    color: black;
+  }
+
+  .btn-round:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+</style>
 {% endblock %}
